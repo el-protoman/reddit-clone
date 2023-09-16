@@ -1,3 +1,36 @@
+# Project requirements and goals
+# Wireframes:
+Figma
+
+# Technologies used: React, Redux, HTML/CSS/JS, Jest, Git and Github
+
+# Features/Components:
++ Accessible on any device and browser (responsive design)
+++ replace components with frontend library (MUI,antd,etc)
++ Users see initial view of data (home page)
+++ Header
++++ Users can search data using terms (search bar)
++++ Users can filter data based on categories (search filter) : dropdown with subreddits (js, html, css, webdev, programming, etc)
+++ Feed
++++ Card component with post data: voting, comments, title, media
++ Users can see detailed view of item (content page)
+++ Header
+++ Hero : Post title, media, comments section, add comment
++ Users can leave an error state (404 page)
+++ Header
+++ Hero : 404 message, go back button
+
++ Redux state slice for reddit home page, state slice for subreddit
++ Addition to Redux state slices of reducers/thunks for voting, adding comments
++ CI/CD deployment (digital ocean or vercel or netlify)
++ TDD (jest and possibly enzyme)
+
+
+# Future Work:
++ Animations and transitions with animation library
++ 90+ accessibility score on lighthouse
+
+
 # Getting Started with Create React App and Redux
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
