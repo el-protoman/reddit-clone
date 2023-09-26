@@ -11,7 +11,7 @@ import ContentCard from './Card';
 export default function Subcontent() {
     return (
         <>
-            <ContentCard />
+            <ContentCard key="test" />
             <List sx={{ width: '100%', bgcolor: 'background.paper', textAlign: 'center' }}>
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>

@@ -3,12 +3,10 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-// import PrimarySearchAppBar from './components/Header';
 import HeaderSearchAppBar from './components/TopNavigation';
 import Feed from './components/Feed';
 import SubFeed from './components/SubFeed';
 import Subcontent from './components/Subcontent';
-// import ProTip from './ProTip';
 
 function Copyright() {
   return (
@@ -33,9 +31,8 @@ export default function App() {
           Material UI Create React App example
         </Typography>
         <Feed />
-        {/* <SubFeed /> */}
+        <SubFeed />
         <Subcontent />
-        {/* <ProTip /> */}
         <Copyright />
       </Box>
     </Container>
