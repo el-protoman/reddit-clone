@@ -8,18 +8,20 @@ import QuiltedImageList from './QuiltedImageList';
 
 const Home = () => {
     const home = useSelector((state) => state.home);
-    const { loading, error, searchTerm, selectedSubreddit } = home;
+    const { loading, error, searchTerm } = home;
     const posts = useSelector(selectFilteredPosts);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchPosts('/r/pics'));
-    }, [selectedSubreddit]);
+    // dispatch(fetchPosts('/r/pics/'))
 
     if (loading) {
+        // Generate an array of PostLoading components with unique keys
+        const postLoadingComponents = Array(Math.floor(Math.random() * (10 - 3 + 1)) + 3)
+            .fill(null)
+            .map((_, index) => <PostLoading key={index} />);
+
         return (
             <div>
-                {Array(Math.floor(Math.random() * (10 - 3 + 1)) + 3).fill(<PostLoading />)}
+                {postLoadingComponents}
             </div>
         );
     }
@@ -28,7 +30,7 @@ const Home = () => {
         return (
             <div className="error">
                 <h2>Failed to load posts.</h2>
-                <button type="button" onClick={() => dispatch(fetchPosts('/r/pics'))}>
+                <button type="button" onClick={() => dispatch(fetchPosts('/r/nibbio'))}>
                     Try again
                 </button>
             </div>

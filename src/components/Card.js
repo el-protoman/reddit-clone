@@ -140,14 +140,17 @@ export default function ContentCard(props) {
                 />
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                        {post.content_categories.map((category, index) => (
-                            <Chip
-                                key={index}
-                                icon={<FaceIcon />}
-                                label={category}
-                                variant="outlined"
-                            />
-                        ))}                    </Typography>
+                        {post.content_categories ?
+                            (post.content_categories.map((category, index) => (
+                                <Chip
+                                    key={index}
+                                    icon={<FaceIcon />}
+                                    label={category}
+                                    variant="outlined"
+                                />
+                            ))) : ('reddit')
+                        }
+                    </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
                     <IconButton aria-label="add to favorites">

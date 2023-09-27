@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchTerm } from '../features/feed/homeSlice';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
+import { RedditTabs } from './Tabs';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -51,16 +50,24 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function TopNavigation() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
+    const [searchTermLocal, setSearchTermLocal] = useState('');
+    const searchTerm = useSelector((state) => state.home.searchTerm);
+    const dispatch = useDispatch();
 
-    const handleMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
+    const onSearchTermChange = (e) => {
+        console.log('input in search bar: ', e.target.value)
+        setSearchTermLocal(e.target.value);
     };
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
+    useEffect(() => {
+        setSearchTermLocal(searchTerm);
+    }, [searchTerm]);
+
+    const onSearchTermSubmit = (e) => {
+        e.preventDefault();
+        dispatch(setSearchTerm(searchTermLocal));
+        console.log('dispatched: ', searchTermLocal)
+    }
 
     return (
         <AppBar position="static">
@@ -71,81 +78,20 @@ function TopNavigation() {
                 <Typography variant="h6">
                     Logo
                 </Typography>
-                <Tabs>
-                    <Tab label="Tab 1" aria-controls="tab1-menu" aria-haspopup="true" onClick={handleMenuOpen} />
-                    <Tab label="Tab 2" aria-controls="tab2-menu" aria-haspopup="true" onClick={handleMenuOpen} />
-                    <Tab label="Tab 3" aria-controls="tab3-menu" aria-haspopup="true" onClick={handleMenuOpen} />
-                </Tabs>
-                <Menu
-                    id="tab1-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={open}
-                    onClose={handleMenuClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    getContentAnchorEl={null}
-                >
-                    <MenuItem onClick={handleMenuClose}>Option 1</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Option 2</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Option 3</MenuItem>
-                </Menu>
-                <Menu
-                    id="tab2-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={open}
-                    onClose={handleMenuClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    getContentAnchorEl={null}
-                >
-                    <MenuItem onClick={handleMenuClose}>Option 1</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Option 2</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Option 3</MenuItem>
-                </Menu>
-                <Menu
-                    id="tab3-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={open}
-                    onClose={handleMenuClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    getContentAnchorEl={null}
-                >
-                    <MenuItem onClick={handleMenuClose}>Option 1</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Option 2</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Option 3</MenuItem>
-                </Menu>
-
-                <Search>
-                    <SearchIconWrapper>
-                        <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{ 'aria-label': 'search' }}
-                    />
-                </Search>
+                <RedditTabs />
+                <form onSubmit={onSearchTermSubmit}>
+                    <Search onMouseLeave={onSearchTermSubmit} onClose={onSearchTermSubmit}>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{ 'aria-label': 'search' }}
+                            value={searchTermLocal}
+                            onChange={onSearchTermChange}
+                        />
+                    </Search>
+                </form>
             </Toolbar>
         </AppBar>
     );

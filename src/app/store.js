@@ -8,3 +8,12 @@ export const store = configureStore({
     home: homeReducer,
   }),
 });
+
+export const setupStore = preloadedState => {
+  return configureStore({
+    reducer: combineReducers({
+      counter: counterReducer,
+      home: homeReducer,
+    }), preloadedState
+  })
+}

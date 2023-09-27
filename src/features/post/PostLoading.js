@@ -31,6 +31,7 @@ const PostLoading = () => {
             </div>
             <div className="post-container">
                 <h3 className="post-title">
+                    Loading
                     <Skeleton width={getRandomNumber(100, 200)} />
                 </h3>
 

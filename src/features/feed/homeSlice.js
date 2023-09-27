@@ -8,7 +8,7 @@ const homeSlice = createSlice({
         loading: false,
         error: false,
         searchTerm: '',
-        selectedSubreddit: '/r/pics/',
+        selectedSubreddit: '/r/nibbio/',
     },
     reducers: {
         setPosts(state, action) {
@@ -65,6 +65,7 @@ const homeSlice = createSlice({
 export const {
     setPosts,
     setSearchTerm,
+    setSelectedSubreddit,
     fetchPostsPending,
     fetchPostsSuccess,
     fetchPostsFailure,
@@ -81,8 +82,8 @@ export default homeSlice.reducer;
 export const fetchPosts = (subreddit) => async (dispatch) => {
     try {
         dispatch(fetchPostsPending());
-        let subreddit = '/r/pics/'
         const posts = await getSubredditPosts(subreddit);
+        console.log('this is the posts array: ', posts)
         const postsWithMetadata = posts.map((post) => ({
             ...post,
             showingComments: false,
