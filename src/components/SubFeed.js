@@ -49,10 +49,10 @@ const SubFeed = () => {
         );
     }
     return (
-        <div style={{ display: 'grid', gridTemplateRows: 'repeat(4, 1fr)', gridTemplateColumns: '1fr', gap: '10px' }}>
+        <div>
             {posts && Array.isArray(posts) ? (
                 posts.map((post) => (
-                    <ContentCard key={post.id} post={post} />
+                    <ContentCard key={post.id} post={post} style={{ padding: '10px', margin: '10px' }} />
                 )))
                 : (<PostLoading />
                 )}

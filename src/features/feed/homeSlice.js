@@ -1,10 +1,11 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { getSubredditPosts } from '../../api/reddit';
+import { getSubredditPosts, getSubreddits, getAllPosts } from '../../api/reddit';
 
 const homeSlice = createSlice({
     name: 'home',
     initialState: {
         posts: [],
+        subreddits: [],
         loading: false,
         error: false,
         searchTerm: '',
@@ -31,6 +32,18 @@ const homeSlice = createSlice({
             state.error = false;
         },
         fetchPostsFailure: (state, action) => {
+            state.loading = false;
+            state.error = true;
+        },
+        getSubredditsPending(state) {
+            state.loading = true;
+            state.error = false;
+        },
+        getSubredditsSuccess(state, action) {
+            state.loading = false;
+            state.subreddits = action.payload;
+        },
+        getSubredditsFailure(state) {
             state.loading = false;
             state.error = true;
         },
@@ -69,6 +82,9 @@ export const {
     fetchPostsPending,
     fetchPostsSuccess,
     fetchPostsFailure,
+    getSubredditsPending,
+    getSubredditsSuccess,
+    getSubredditsFailure,
     getCommentsPending,
     getCommentsSuccess,
     getCommentsFailure,
@@ -79,6 +95,7 @@ export const {
 
 export default homeSlice.reducer;
 
+// Redux Thunk that gets posts from a subreddit
 export const fetchPosts = (subreddit) => async (dispatch) => {
     try {
         dispatch(fetchPostsPending());
@@ -93,6 +110,31 @@ export const fetchPosts = (subreddit) => async (dispatch) => {
         }))
         dispatch(fetchPostsSuccess(postsWithMetadata));
     } catch (error) {
+        dispatch(fetchPostsFailure());
+    }
+}
+
+// Redux Thunk that gets posts from array of specified subreddits
+export const fetchHomePosts = () => async (dispatch) => {
+    try {
+        dispatch(getSubredditsPending());
+        const subreddits = await getSubreddits();
+        console.log('subreddits:', subreddits)
+        dispatch(getSubredditsSuccess(subreddits));
+        dispatch(fetchPostsPending());
+        const posts = await getAllPosts(subreddits);
+        console.log('fetch home posts', posts)
+        const postsWithMetadata = posts.map((post) => ({
+            ...post,
+            showingComments: false,
+            comments: [],
+            loadingComments: false,
+            errorComments: false,
+        }))
+        dispatch(fetchPostsSuccess(postsWithMetadata));
+    } catch (error) {
+        console.log('redux thunk fetch all posts error: ', error)
+        dispatch(getSubredditsFailure());
         dispatch(fetchPostsFailure());
     }
 }

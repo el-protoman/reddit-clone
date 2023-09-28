@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchTerm } from '../features/feed/homeSlice';
+import { fetchHomePosts, setSearchTerm } from '../features/feed/homeSlice';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import RedditIcon from '@mui/icons-material/Reddit';
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -49,7 +50,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-function TopNavigation() {
+export const TopNavigation = (props) => {
+    const { toggleSubFeed, toggleHomeFeed } = props;
     const [searchTermLocal, setSearchTermLocal] = useState('');
     const searchTerm = useSelector((state) => state.home.searchTerm);
     const dispatch = useDispatch();
@@ -66,19 +68,25 @@ function TopNavigation() {
     const onSearchTermSubmit = (e) => {
         e.preventDefault();
         dispatch(setSearchTerm(searchTermLocal));
-        console.log('dispatched: ', searchTermLocal)
+        console.log('dispatched with search: ', searchTermLocal)
+    }
+
+    const onHomeIconClick = () => {
+        // Return to home view logic here
+        dispatch(fetchHomePosts());
+        toggleHomeFeed()
     }
 
     return (
-        <AppBar position="static">
+        <AppBar position="sticky">
             <Toolbar>
-                <IconButton edge="start" color="inherit" aria-label="menu">
-                    <MenuIcon />
+                <IconButton edge="start" color="inherit" aria-label="menu" onClick={onHomeIconClick}>
+                    <HomeIcon />
                 </IconButton>
-                <Typography variant="h6">
-                    Logo
+                <Typography variant="h5">
+                    <RedditIcon /> mini
                 </Typography>
-                <RedditTabs />
+                <RedditTabs toggleSubFeed={toggleSubFeed} />
                 <form onSubmit={onSearchTermSubmit}>
                     <Search onMouseLeave={onSearchTermSubmit} onClose={onSearchTermSubmit}>
                         <SearchIconWrapper>
@@ -96,7 +104,3 @@ function TopNavigation() {
         </AppBar>
     );
 }
-
-export default TopNavigation;
-
-

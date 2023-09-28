@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, selectFilteredPosts, setSearchTerm } from './homeSlice';
+import { fetchPosts, fetchHomePosts, selectFilteredPosts, setSearchTerm } from './homeSlice';
 import PostLoading from '../post/PostLoading';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -11,8 +11,9 @@ const Home = () => {
     const { loading, error, searchTerm } = home;
     const posts = useSelector(selectFilteredPosts);
     const dispatch = useDispatch();
-    // dispatch(fetchPosts('/r/pics/'))
-
+    useEffect(() => {
+        dispatch(fetchHomePosts());
+    }, []);
     if (loading) {
         // Generate an array of PostLoading components with unique keys
         const postLoadingComponents = Array(Math.floor(Math.random() * (10 - 3 + 1)) + 3)
