@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux';
 import { setSelectedSubreddit } from '../features/feed/homeSlice';
 import Tabs from '@material-ui/core/Tabs';
@@ -12,7 +12,7 @@ const menu3 = ['/r/marvel/', '/r/starwars/']
 
 export const RedditTabs = (props) => {
     const { toggleSubFeed } = props;
-
+    const [selectedTab, setSelectedTab] = React.useState(1);
     const [openTab, setOpenTab] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -28,17 +28,17 @@ export const RedditTabs = (props) => {
         setOpenTab(null);
         dispatch(setSelectedSubreddit(selectedItem.target.textContent))
         console.log('dispatched sub: ', selectedItem.target.textContent)
-        toggleSubFeed();
+        toggleSubFeed(selectedItem.target.textContent);
         console.log('switching to sub')
     };
 
     return (
         <>
-            <Tabs>
+            <Tabs value={selectedTab} onChange={(event, newValue) => setSelectedTab(newValue)}>
                 <Tab value={0} label="Coding" aria-controls="tab1-menu" aria-haspopup="true" onClick={(event) => handleMenuOpen(event, 'tab1')} />
                 <Tab value={1} label="CompSci" aria-controls="tab2-menu" aria-haspopup="true" onClick={(event) => handleMenuOpen(event, 'tab2')} />
                 <Tab value={2} label="Media" aria-controls="tab3-menu" aria-haspopup="true" onClick={(event) => handleMenuOpen(event, 'tab3')} />
-            </Tabs>
+            </Tabs >
             <Menu
                 id="tab1-menu"
                 anchorEl={anchorEl}

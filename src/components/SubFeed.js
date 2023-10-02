@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, selectFilteredPosts, setSearchTerm } from '../features/feed/homeSlice';
 import PostLoading from '../features/post/PostLoading';
 
-const SubFeed = () => {
+const SubFeed = (props) => {
+    const { handleSelectedPost } = props;
     const home = useSelector((state) => state.home);
     const { loading, error, searchTerm, selectedSubreddit } = home;
     const posts = useSelector(selectFilteredPosts);
@@ -12,7 +13,7 @@ const SubFeed = () => {
 
     useEffect(() => {
         dispatch(fetchPosts(selectedSubreddit));
-    }, [selectedSubreddit]);
+    }, [selectedSubreddit, dispatch]);
 
     if (loading) {
         // Generate an array of PostLoading components with unique keys
@@ -52,7 +53,7 @@ const SubFeed = () => {
         <div>
             {posts && Array.isArray(posts) ? (
                 posts.map((post) => (
-                    <ContentCard key={post.id} post={post} style={{ padding: '10px', margin: '10px' }} />
+                    <ContentCard handleSelectedPost={handleSelectedPost} post={post} style={{ padding: '10px', margin: '10px' }} />
                 )))
                 : (<PostLoading />
                 )}

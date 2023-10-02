@@ -12,8 +12,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://nicholasdagostino.co">
+        Reddit minimalist clone
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -22,14 +22,32 @@ function Copyright() {
 }
 
 export default function App() {
+  const [currentSub, setCurrentSub] = React.useState(null);
   const [isSubFeed, setIsSubFeed] = React.useState(false);
+  const [currentPost, setCurrentPost] = React.useState(null);
+  const [isSelectedPost, setSelectedPost] = React.useState(null);
 
-  const handleToggleSubFeed = () => {
+  const handleSelectedPost = (post) => {
+    console.log('set selected post to: ', post)
+    setSelectedPost(post);
+    setCurrentPost(post);
+  }
+
+  const closeSelectedPost = () => {
+    setSelectedPost(null);
+    setCurrentPost(null);
+  }
+
+  const handleToggleSubFeed = (sub) => {
     setIsSubFeed(true);
+    setSelectedPost(null);
+    setCurrentSub(sub)
   };
 
   const handleToggleHomeFeed = () => {
     setIsSubFeed(false);
+    setSelectedPost(null);
+    setCurrentSub(null);
   }
 
   return (
@@ -39,11 +57,32 @@ export default function App() {
         toggleHomeFeed={handleToggleHomeFeed}
       />
       <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Material UI Create React App example
-        </Typography>
-        {isSubFeed ? <SubFeed /> : <Feed />}
-        <Subcontent />
+        {isSelectedPost !== null ? (
+          <>
+            <Typography variant="h4" component="h1" gutterBottom>
+              Reddit Content Post
+            </Typography>
+            <Subcontent closeSelectedPost={closeSelectedPost} post={currentPost} />
+          </>
+        ) : (
+          <>
+            {isSubFeed ? (
+              <>
+                <Typography variant="h4" component="h1" gutterBottom>
+                  Subfeed - {currentSub}
+                </Typography>
+                <SubFeed handleSelectedPost={handleSelectedPost} />
+              </>
+            ) : (
+              <>
+                <Typography variant="h4" component="h1" gutterBottom>
+                  Home feed - Comp Sci
+                </Typography>
+                <Feed handleSelectedPost={handleSelectedPost} />
+              </>
+            )}
+          </>
+        )}
         <Copyright />
       </Box>
     </Container>

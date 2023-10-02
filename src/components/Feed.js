@@ -2,10 +2,11 @@ import React from 'react';
 import ContentCard from './Card';
 import Home from '../features/feed/HomeFeed'
 
-const Feed = () => {
+const Feed = (props) => {
+    const { handleSelectedPost } = props;
     return (
         <div>
-            <Home />
+            <Home handleSelectedPost={handleSelectedPost} />
         </div>
     );
 }

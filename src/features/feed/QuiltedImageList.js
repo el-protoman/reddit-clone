@@ -13,7 +13,7 @@ function srcset(image, size, rows = 1, cols = 1) {
     };
 }
 
-const QuiltedImageList = ({ posts }) => {
+const QuiltedImageList = ({ posts, handleSelectedPost }) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const handleImageClick = (post) => {
         setSelectedImage((prevSelectedImage) => {
@@ -27,27 +27,11 @@ const QuiltedImageList = ({ posts }) => {
 
     return (
         <>
-            {/* <ImageList variant="quilted" cols={4} rowHeight={250} style={{ width: '100%' }}>
-                {posts && Array.isArray(posts) ? (
-                    posts.map((post, index) => (
-                        selectedImage === post ? (
-                            <ContentCard key={post.id} post={post} style={{ width: '100%' }} onClick={handleImageClick} />
-                        ) : (
-                            <ImageListItem key={post.id} onClick={() => handleImageClick(post)}>
-                                <img {...srcset(post.is_gallery ? post.thumbnail : post.url, 250)} alt={post.title} loading="lazy" />
-                            </ImageListItem>
-                        )
-                    ))) : (
-                    // Render a loading message or handle the empty posts case
-                    <PostLoading />
-                )
-                }
-            </ImageList> */}
             <ImageList variant="quilted" cols={4} rowHeight={250} style={{ width: '100%' }}>
                 {posts && Array.isArray(posts) ? (
                     posts.map((post, index) => (
                         selectedImage === post ? (
-                            <ContentCard key={post.id} post={post} style={{ width: '100%' }} onClick={handleImageClick} />
+                            <ContentCard handleSelectedPost={handleSelectedPost} key={post.id} post={post} style={{ width: '100%' }} onClick={handleImageClick} />
 
                         ) : (
                             <ImageListItem key={post.id} onClick={() => handleImageClick(post)}>

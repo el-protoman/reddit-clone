@@ -2,18 +2,19 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, fetchHomePosts, selectFilteredPosts, setSearchTerm } from './homeSlice';
 import PostLoading from '../post/PostLoading';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
 import QuiltedImageList from './QuiltedImageList';
 
-const Home = () => {
+const Home = (props) => {
+    const { handleSelectedPost } = props;
     const home = useSelector((state) => state.home);
     const { loading, error, searchTerm } = home;
     const posts = useSelector(selectFilteredPosts);
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(fetchHomePosts());
-    }, []);
+    }, [dispatch]);
+
     if (loading) {
         // Generate an array of PostLoading components with unique keys
         const postLoadingComponents = Array(Math.floor(Math.random() * (10 - 3 + 1)) + 3)
@@ -50,7 +51,7 @@ const Home = () => {
     }
 
     return (
-        <QuiltedImageList posts={posts} />
+        <QuiltedImageList handleSelectedPost={handleSelectedPost} posts={posts} />
     );
 };
 
