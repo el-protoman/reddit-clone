@@ -47,31 +47,16 @@ const homeSlice = createSlice({
             state.loading = false;
             state.error = true;
         },
-        getCommentsPending: (state) => {
-            state.loading = true;
-            state.error = null;
+        updatePostInHome: (state, action) => {
+            const updatedPost = action.payload;
+            // console.log('updated post:', updatedPost);
+            // Find the corresponding post in the home slice and update it
+            const index = state.posts.findIndex((post) => post.id === updatedPost.id);
+            if (index !== -1) {
+                state.posts[index] = updatedPost;
+            }
+            // TODO: Find out why the main home feed is rerendering after each call of this action
         },
-        getCommentsSuccess: (state, action) => {
-            state.comments = action.payload;
-            state.loading = false;
-            state.error = null;
-        },
-        getCommentsFailure: (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        },
-        upVotePostPending: (state) => {
-            state.loading = true;
-            state.error = null;
-        },
-        upVotePostSuccess: (state) => {
-            state.loading = false;
-            state.error = null;
-        },
-        upVotePostFailure: (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        }
     }
 });
 
@@ -85,12 +70,7 @@ export const {
     getSubredditsPending,
     getSubredditsSuccess,
     getSubredditsFailure,
-    getCommentsPending,
-    getCommentsSuccess,
-    getCommentsFailure,
-    upVotePostPending,
-    upVotePostSuccess,
-    upVotePostFailure
+    updatePostInHome
 } = homeSlice.actions;
 
 export default homeSlice.reducer;

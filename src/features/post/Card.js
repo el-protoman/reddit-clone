@@ -1,4 +1,8 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { getComments } from './postSlice';
+import { increment } from '../counter/counterSlice';
+
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -18,7 +22,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import he from 'he';
-import Comments from './Comments';
+import Comments from '../../components/Comments';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -34,9 +38,14 @@ const ExpandMore = styled((props) => {
 export default function ContentCard(props) {
     const [expanded, setExpanded] = React.useState(false);
     const { post, style, onClick, handleSelectedPost, closeSelectedPost } = props;
+    const dispatch = useDispatch();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
+        if (!expanded) {
+            dispatch(getComments(post))
+            dispatch(increment());
+        }
     };
 
     if (!handleSelectedPost) {
@@ -127,6 +136,7 @@ export default function ContentCard(props) {
 
                             <MoreVertIcon onClick={() => {
                                 handleSelectedPost(post);
+                                dispatch(getComments(post))
                                 console.log('select vert icon inside card')
                             }} />
 
@@ -200,7 +210,7 @@ export default function ContentCard(props) {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <Comments />
+                        <Comments comments={post.comments} />
                     </CardContent>
                 </Collapse>
             </Card>

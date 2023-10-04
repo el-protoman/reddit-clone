@@ -30,6 +30,7 @@ describe('HomeFeed Component', () => {
         expect(loadingTextElements.some((element) => element !== null)).toBeTruthy();
     });
 
+    // TODO debug last two tests
     it('displays error message and retry button on error', () => {
         useSelector.mockReturnValue({
             error: true,

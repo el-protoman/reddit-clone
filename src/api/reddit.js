@@ -15,7 +15,6 @@ export const getSubreddits = async () => {
     return json.data.children.map((subreddit) => subreddit.data);
 };
 // get all posts for array of subreddits
-// get all posts for array of subreddits
 
 export const getAllPosts = async (subreddits) => {
     const posts = [];
@@ -33,7 +32,8 @@ export const getAllPosts = async (subreddits) => {
 };
 
 // getpostcomments
-
-
-// getpostcomments
-
+export const getPostComments = async (permalink) => {
+    const response = await fetch(`${API_ROOT}${permalink}.json`);
+    const json = await response.json();
+    return json[1].data.children.map((subreddit) => subreddit.data);
+};

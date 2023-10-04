@@ -26,20 +26,25 @@ const Home = (props) => {
                 {postLoadingComponents}
             </div>
         );
-    }
+    };
 
     if (error) {
         return (
             <div className="error">
                 <h2>Failed to load posts.</h2>
-                <button type="button" onClick={() => dispatch(fetchPosts('/r/nibbio'))}>
+                <button type="button" onClick={() => {
+                    const menu3 = ['/r/marvel/', '/r/starwars/']
+                    const randomSubreddit = menu3[Math.floor(Math.random() * menu3.length)];
+                    dispatch(fetchPosts(randomSubreddit)
+                    )
+                }}>
                     Try again
                 </button>
             </div>
         );
-    }
+    };
 
-    if (posts.length === 0) {
+    if (posts.length === 0 && searchTerm !== '') {
         return (
             <div className="error">
                 <h2>No posts matching "{searchTerm}"</h2>
@@ -48,11 +53,20 @@ const Home = (props) => {
                 </button>
             </div>
         );
-    }
-
-    return (
-        <QuiltedImageList handleSelectedPost={handleSelectedPost} posts={posts} />
-    );
+    } else if (posts.length > 0) {
+        return (
+            <QuiltedImageList handleSelectedPost={handleSelectedPost} posts={posts} />
+        );
+    } else {
+        return (
+            <div>
+                <h2>Select a subreddit or load posts from /r/nibbio</h2>
+                <button type="button" onClick={() => dispatch(fetchPosts('/r/nibbio'))}>
+                    Fetch Posts
+                </button>
+            </div>
+        );
+    };
 };
 
 export default Home;

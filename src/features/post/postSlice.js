@@ -1,4 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { updatePostInHome } from '../feed/homeSlice';
+import { getPostComments } from '../../api/reddit';
+
 
 const initialState = {
     post: null,
@@ -11,50 +14,59 @@ const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        fetchPostPending: (state) => {
+        getPostPending: (state, action) => {
             state.loading = true;
-            state.error = null;
+            state.post = action.payload;
+            state.error = false;
         },
-        fetchPostSuccess: (state, action) => {
+        getPostSuccess: (state, action) => {
             state.loading = false;
-            state.post = action.payload.post;
-            state.comments = action.payload.comments;
+            state.post = action.payload;
+            state.error = false;
+            // cannot use dispatch in reducer as it is a pure function, use in async thunk instead
+            // dispatch(updatePostInHome(action.payload));
         },
-        fetchPostError: (state, action) => {
+        getPostError: (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = [...state.error, action.payload.error];
         },
         getCommentsPending: (state) => {
             state.loading = true;
-            state.error = null;
+            state.error = false;
+            state.post.loadingComments = true;
         },
         getCommentsSuccess: (state, action) => {
             state.loading = false;
-            state.comments = action.payload.comments;
+            state.comments = action.payload;
+            state.post.comments = state.comments;
+            state.post.loadingComments = false;
+            state.error = false;
         },
         getCommentsError: (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload.error;
         },
+        // TODO : UPDATE VOTES ACTIONS
         upVotePostPending: (state) => {
             state.loading = true;
-            state.error = null;
+            state.error = false;
         },
-        upVotePostSuccess: (state, action) => {
+        upVotePostSuccess: (state) => {
             state.loading = false;
-            state.post = action.payload.post;
+            state.post.ups += 1;
+            state.error = false;
         },
         upVotePostError: (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload.error;
         },
     },
 });
 
 export const {
-    fetchPostPending,
-    fetchPostSuccess,
-    fetchPostError,
+    getPostPending,
+    getPostSuccess,
+    getPostError,
     getCommentsPending,
     getCommentsSuccess,
     getCommentsError,
@@ -65,36 +77,27 @@ export const {
 
 export default postSlice.reducer;
 
-export const fetchPost = (postId) => {
-    return async (dispatch) => {
-        dispatch(fetchPostPending());
+export const getComments = (postId) => async (dispatch, getState) => {
+    try {
+        const post = postId
+        const permalink = postId.permalink
 
-        try {
-            const response = await fetch(`https://www.reddit.com/api/post/${postId}`);
-            const data = await response.json();
-
-            dispatch(fetchPostSuccess(data));
-        } catch (error) {
-            dispatch(fetchPostError(error.message));
-        }
-    };
-};
-
-export const getComments = (postId) => {
-    return async (dispatch) => {
+        dispatch(getPostPending(post));
         dispatch(getCommentsPending());
+        dispatch(updatePostInHome(getState().post.post))
 
-        try {
-            const response = await fetch(`https://www.reddit.com/api/comments/${postId}`);
-            const data = await response.json();
-
-            dispatch(getCommentsSuccess(data));
-        } catch (error) {
-            dispatch(getCommentsError(error.message));
-        }
-    };
+        const comments = await getPostComments(permalink);
+        console.log('comments returned', comments)
+        dispatch(getPostSuccess(post));
+        dispatch(getCommentsSuccess(comments));
+        dispatch(updatePostInHome(getState().post.post))
+    } catch (error) {
+        dispatch(getCommentsError(error.message));
+        dispatch(getPostError(error.message));
+    }
 };
 
+// TODO: update this
 export const upVotePost = (postId) => {
     return async (dispatch) => {
         dispatch(upVotePostPending());
@@ -111,3 +114,7 @@ export const upVotePost = (postId) => {
         }
     };
 };
+
+// Selectors
+const selectComments = (state) => state.post.comments;
+export const selectPostComments = createSelector(selectComments)

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Comments from './Comments';
-import ContentCard from './Card';
+import ContentCard from '../features/post/Card';
 
 export default function Subcontent(props) {
     const { closeSelectedPost, post } = props
@@ -8,7 +8,7 @@ export default function Subcontent(props) {
         <>
             <ContentCard closeSelectedPost={closeSelectedPost} key={post.id} post={post} />
             <div>
-                <Comments />
+                <Comments comments={post.comments} />
             </div>
         </>
     );

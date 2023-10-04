@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import ContentCard from '../../components/Card';
+import ContentCard from '../post/Card';
 import PostLoading from '../post/PostLoading';
 import { Paper, Typography } from '@mui/material';
 
@@ -39,7 +39,7 @@ const QuiltedImageList = ({ posts, handleSelectedPost }) => {
                                     <img {...srcset(post.is_gallery ? post.thumbnail : post.url, 250)} alt={post.title} loading="lazy" />
                                 )}
                                 {post.post_hint === 'hosted:video' && (
-                                    <video src={post.media.reddit_video.fallback_url} controls />
+                                    <video src={post.media.reddit_video.fallback_url} controls width={250} height={250} />
                                 )}
                                 {post.is_self && (
                                     <Paper elevation={2} style={{ backgroundColor: 'blue', margin: '10px', padding: '5px' }}>

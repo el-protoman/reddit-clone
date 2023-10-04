@@ -1,5 +1,4 @@
 import React from 'react';
-import ContentCard from './Card';
 import Home from '../features/feed/HomeFeed'
 
 const Feed = (props) => {

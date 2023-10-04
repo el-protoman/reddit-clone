@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ContentCard from './Card';
+import ContentCard from '../features/post/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, selectFilteredPosts, setSearchTerm } from '../features/feed/homeSlice';
 import PostLoading from '../features/post/PostLoading';
