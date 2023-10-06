@@ -12,15 +12,17 @@ import PostLoading from '../features/post/PostLoading';
 
 export default function Comments({ comments }) {
     const [visibleComments, setVisibleComments] = useState(10);
-    const postComments = useSelector((state) => state.post.post.loadingComments);
+    const postCommentsStatus = useSelector((state) => state.post.post.loadingComments);
 
 
     const handleShowMore = () => {
         setVisibleComments((prevVisibleComments) => prevVisibleComments + 10);
     };
 
+    console.log(`showingComments passed to component:`, comments)
+
     // TODO: Add a no posts found if comments are empty after fetching, use api to return empty array with 0 as first value or with state value state.home.posts.errorComments
-    if (comments.length === 0 && postComments) {
+    if (comments.length === 0 && postCommentsStatus) {
         return <PostLoading />;
     }
 

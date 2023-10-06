@@ -11,3 +11,8 @@ const Feed = (props) => {
 }
 
 export default Feed;
+
+// export default React.memo(Feed, (prevProps, nextProps) => {
+//     // only update if the posts prop has changed
+//     return prevProps.posts !== nextProps.posts;
+// });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getComments } from './postSlice';
 import { increment } from '../counter/counterSlice';
@@ -35,9 +35,9 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function ContentCard(props) {
+function ContentCard(props) {
     const [expanded, setExpanded] = React.useState(false);
-    const { post, style, onClick, handleSelectedPost, closeSelectedPost } = props;
+    const { post, style, onClick, handleSelectedPost, closeSelectedPost, comments } = props;
     const dispatch = useDispatch();
 
     const handleExpandClick = () => {
@@ -47,6 +47,12 @@ export default function ContentCard(props) {
             dispatch(increment());
         }
     };
+
+    useEffect(() => {
+        console.log('useEffect called for comments', post.comments);
+    }, [post.comments]);
+
+
 
     if (!handleSelectedPost) {
         const decodedText = he.decode(post.selftext);
@@ -71,7 +77,7 @@ export default function ContentCard(props) {
                     title={post.title}
                     subheader={post.created}
                 />
-                {post.post_hint === 'image' && (
+                {post && (post.post_hint === 'image') && (
                     <CardMedia
                         component="img"
                         className='post-image'
@@ -80,13 +86,13 @@ export default function ContentCard(props) {
                         onClick={onClick}
                     />
                 )}
-                {(post.post_hint === 'self' || post.is_self) && (
+                {post && (post.post_hint === 'self' || post.is_self) && (
                     <CardContent onClick={onClick}
                     >
                         <div dangerouslySetInnerHTML={{ __html: decodedText }}></div>
                     </CardContent>
                 )}
-                {post.post_hint === 'hosted:video' && (
+                {(post && post.post_hint === 'hosted:video') && (
                     <CardMedia
                         component="video"
                         className='post-video'
@@ -95,7 +101,7 @@ export default function ContentCard(props) {
                         onClick={onClick}
                     />
                 )}
-                {!post.post_hint && !post.is_self && (
+                {post && (!post.post_hint && !post.is_self) && (
                     <CardMedia
                         component="img"
                         className='post-image'
@@ -145,7 +151,7 @@ export default function ContentCard(props) {
                     title={post.title}
                     subheader={post.created}
                 />
-                {post.post_hint === 'image' && (
+                {post && (post.post_hint === 'image') && (
                     <CardMedia
                         component="img"
                         className='post-image'
@@ -154,13 +160,13 @@ export default function ContentCard(props) {
                         onClick={onClick}
                     />
                 )}
-                {(post.post_hint === 'self' || post.is_self) && (
+                {post && (post.post_hint === 'self' || post.is_self) && (
                     <CardContent onClick={onClick}
                     >
                         <div dangerouslySetInnerHTML={{ __html: decodedText }}></div>
                     </CardContent>
                 )}
-                {post.post_hint === 'hosted:video' && (
+                {post && (post.post_hint === 'hosted:video') && (
                     <CardMedia
                         component="video"
                         className='post-video'
@@ -169,7 +175,7 @@ export default function ContentCard(props) {
                         onClick={onClick}
                     />
                 )}
-                {!post.post_hint && !post.is_self && (
+                {post && (!post.post_hint && !post.is_self) && (
                     <CardMedia
                         component="img"
                         className='post-image'
@@ -180,7 +186,7 @@ export default function ContentCard(props) {
                 )}
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                        {post.content_categories ?
+                        {post && (post.content_categories) ?
                             (post.content_categories.map((category, index) => (
                                 <Chip
                                     key={index}
@@ -208,12 +214,23 @@ export default function ContentCard(props) {
                         <ExpandMoreIcon />
                     </ExpandMore>
                 </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                {post && (<Collapse in={expanded} timeout="auto" unmountOnExit={true}>
                     <CardContent>
-                        <Comments comments={post.comments} />
+                        {!comments ? (
+                            <Comments comments={post.comments} />
+                        ) : (
+                            <Comments comments={comments} />
+                        )}
                     </CardContent>
-                </Collapse>
+                </Collapse>)}
             </Card>
         );
     }
 }
+
+export default ContentCard;
+
+// export default React.memo(ContentCard, (prevProps, nextProps) => {
+//     // only update if the posts prop has changed
+//     return prevProps.posts !== nextProps.posts;
+// });

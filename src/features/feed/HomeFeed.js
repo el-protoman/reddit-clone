@@ -8,8 +8,10 @@ const Home = (props) => {
     const { handleSelectedPost } = props;
     const home = useSelector((state) => state.home);
     const { loading, error, searchTerm } = home;
-    const posts = useSelector(selectFilteredPosts);
+    const filteredPosts = useSelector(selectFilteredPosts);
     const dispatch = useDispatch();
+    // separating comments
+    const extractedComments = filteredPosts.map(post => post.comments);
 
     useEffect(() => {
         dispatch(fetchHomePosts());
@@ -44,7 +46,7 @@ const Home = (props) => {
         );
     };
 
-    if (posts.length === 0 && searchTerm !== '') {
+    if (filteredPosts.length === 0 && searchTerm !== '') {
         return (
             <div className="error">
                 <h2>No posts matching "{searchTerm}"</h2>
@@ -53,9 +55,9 @@ const Home = (props) => {
                 </button>
             </div>
         );
-    } else if (posts.length > 0) {
+    } else if (filteredPosts.length > 0) {
         return (
-            <QuiltedImageList handleSelectedPost={handleSelectedPost} posts={posts} />
+            <QuiltedImageList handleSelectedPost={handleSelectedPost} posts={filteredPosts} comments={extractedComments} />
         );
     } else {
         return (
@@ -70,3 +72,9 @@ const Home = (props) => {
 };
 
 export default Home;
+
+// export default React.memo(Home, (prevProps, nextProps) => {
+//     // only update if the posts prop has changed
+//     return prevProps.posts !== nextProps.posts;
+// });
+

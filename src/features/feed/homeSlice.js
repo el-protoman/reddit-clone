@@ -49,13 +49,13 @@ const homeSlice = createSlice({
         },
         updatePostInHome: (state, action) => {
             const updatedPost = action.payload;
-            // console.log('updated post:', updatedPost);
-            // Find the corresponding post in the home slice and update it
-            const index = state.posts.findIndex((post) => post.id === updatedPost.id);
-            if (index !== -1) {
-                state.posts[index] = updatedPost;
-            }
-            // TODO: Find out why the main home feed is rerendering after each call of this action
+            // Update Immutably
+            state.posts = state.posts.map((post) => {
+                if (post.id === updatedPost.id) {
+                    return updatedPost;
+                }
+                return post;
+            });
         },
     }
 });

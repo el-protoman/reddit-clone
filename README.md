@@ -29,6 +29,7 @@ Figma
 # Future Work:
 + Animations and transitions with animation library
 + 90+ accessibility score on lighthouse
++ reducing loading time of home feed and sub feeds
 
 
 # Getting Started with Create React App and Redux
