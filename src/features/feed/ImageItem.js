@@ -1,52 +1,51 @@
-import React, { useState } from 'react';
-import ImageListItem from '@mui/material/ImageListItem';
-import { Paper, Typography } from '@mui/material';
+import React from 'react';
 import ContentCard from '../post/Card';
+import { TaggedContentCard } from 'react-ui-cards';
+import './Home.css'
 
-
-function srcset(image, size, rows = 1, cols = 1) {
-    return {
-        src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-        srcSet: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format&dpr=2 2x`,
-    };
-}
-
-function ImageItem({ post, handleSelectedPost, comments }) {
+function ImageItem({ post, handleSelectedPost, comments, selectedItemId, setSelectedItemId }) {
     // Render each image item here, using the post and handleSelectedPost props
-    const [selectedImage, setSelectedImage] = useState(null);
-    const handleImageClick = (post) => {
-        setSelectedImage((prevSelectedImage) => {
-            if (prevSelectedImage === post) {
-                return null; // Reset to null if the same image is selected
-            } else {
-                return post; // Set the selected image to the new post
-            }
-        });
+
+    const isSelected = selectedItemId === post.id;
+    const handleClick = () => {
+        if (isSelected) {
+            // If already selected, close the card by setting selectedItemId to null
+            setSelectedItemId(null);
+        } else {
+            // If not selected, open the card by setting selectedItemId to the post's id
+            setSelectedItemId(post.id);
+            console.log('selectedPost', post)
+        }
     };
+
     return (
-        // Your image item JSX here
+        // Render main feed as unselected or selected post(card)
         <>
-            {/* selectedImage is different from post and was causing rerendering after comments have been fetched */}
-            {selectedImage && selectedImage.id === post.id ? (
-                <ContentCard handleSelectedPost={handleSelectedPost} key={post.id} comments={comments} post={post} style={{ width: '100%' }} onClick={handleImageClick} />
+            <div className={`image-item ${isSelected ? 'selected' : ''}`}>
+                {/* selectedItem is different from post and was causing rerendering after comments have been fetched */}
+                {isSelected ? (
+                    <ContentCard handleSelectedPost={handleSelectedPost}
+                        key={post.id}
+                        comments={comments}
+                        post={post}
+                        // style={{ width: '100%' }}
+                        onClick={handleClick}
+                    />
 
-            ) : (
-                <ImageListItem key={post.id} onClick={() => handleImageClick(post)}>
-                    {post.post_hint === 'image' && (
-                        <img {...srcset(post.is_gallery ? post.thumbnail : post.url, 250)} alt={post.title} loading="lazy" />
-                    )}
-                    {post.post_hint === 'hosted:video' && (
-                        <video src={post.media.reddit_video.fallback_url} controls width={250} height={250} />
-                    )}
-                    {post.is_self && (
-                        <Paper elevation={2} style={{ backgroundColor: 'blue', margin: '10px', padding: '5px' }}>
-                            <Typography variant="h5" component="h6">{post.title}</Typography>
-                        </Paper>
-                    )}
-                </ImageListItem>
-            )
-            }
-
+                ) : (
+                    <div className="custom-tagged-content-card">
+                        <TaggedContentCard
+                            thumbnail={post.is_gallery ? post.thumbnail : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.cultofmac.com%2Fwp-content%2Fuploads%2F2016%2F11%2FReddit.png&f=1&nofb=1&ipt=deeda785a453787cb58ece603dbdffbf4b9b1a1759d7563d59fd31b841e0d53b&ipo=images'}
+                            title={post.title.slice(0, 100)}
+                            description={post.is_self ? post.selftext.slice(0, 60) : ''}
+                            tags={post.content_categories ?
+                                post.content_categories : ['reddit']}
+                            onClick={handleClick}
+                        />
+                    </div >
+                )
+                }
+            </div>
         </>
     );
 }

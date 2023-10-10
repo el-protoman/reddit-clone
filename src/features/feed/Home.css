@@ -1,0 +1,16 @@
+.src-TaggedContentCard-CardContent-styles-module__card-content--ZfzZ5 .src-TaggedContentCard-CardContent-styles-module__thumbnail--q8hER img {
+    /* Add your custom CSS styles here */
+    max-height: 150px;
+}
+
+.src-TaggedContentCard-CardContent-styles-module__card-content--ZfzZ5 .src-TaggedContentCard-CardContent-styles-module__text--UF7Sq {
+    overflow: auto;
+    max-height: 150px;
+}
+
+.image-item.selected {
+    /* Your styles for selected items that should take up the whole row */
+    width: 100%;
+    grid-column: span 3;
+    /* Adjust the number of columns as needed */
+}

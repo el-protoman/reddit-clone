@@ -23,6 +23,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import he from 'he';
 import Comments from '../../components/Comments';
+import './Card.css';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -34,6 +35,8 @@ const ExpandMore = styled((props) => {
         duration: theme.transitions.duration.shortest,
     }),
 }));
+
+// TODO: Add upvote capability
 
 function ContentCard(props) {
     const [expanded, setExpanded] = React.useState(false);
@@ -48,17 +51,11 @@ function ContentCard(props) {
         }
     };
 
-    useEffect(() => {
-        console.log('useEffect called for comments', post.comments);
-    }, [post.comments]);
-
-
-
     if (!handleSelectedPost) {
         const decodedText = he.decode(post.selftext);
 
         return (
-            <Card sx={{ width: '100%' }}>
+            <Card>
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: red[500] }} aria-label="author">
@@ -66,11 +63,14 @@ function ContentCard(props) {
                         </Avatar>
                     }
                     action={
-                        <IconButton aria-label="actions">
-
-                            <ArrowBackIcon onClick={() => {
+                        <IconButton
+                            aria-label="actions"
+                            onClick={() => {
                                 closeSelectedPost();
-                            }} />
+                            }}
+                        >
+
+                            <ArrowBackIcon />
 
                         </IconButton>
                     }
@@ -87,7 +87,7 @@ function ContentCard(props) {
                     />
                 )}
                 {post && (post.post_hint === 'self' || post.is_self) && (
-                    <CardContent onClick={onClick}
+                    <CardContent className="responsive-div" onClick={onClick}
                     >
                         <div dangerouslySetInnerHTML={{ __html: decodedText }}></div>
                     </CardContent>
@@ -111,7 +111,7 @@ function ContentCard(props) {
                     />
                 )}
 
-                <CardContent>
+                <CardContent className="responsive-div">
                     <Typography variant="body2" color="text.secondary">
                         {post.content_categories ?
                             (post.content_categories.map((category, index) => (
@@ -138,13 +138,16 @@ function ContentCard(props) {
                         </Avatar>
                     }
                     action={
-                        <IconButton aria-label="actions">
-
-                            <MoreVertIcon onClick={() => {
+                        <IconButton
+                            aria-label="actions"
+                            onClick={() => {
                                 handleSelectedPost(post);
                                 dispatch(getComments(post))
                                 console.log('select vert icon inside card')
-                            }} />
+                            }}
+                        >
+
+                            <MoreVertIcon />
 
                         </IconButton>
                     }
@@ -161,9 +164,9 @@ function ContentCard(props) {
                     />
                 )}
                 {post && (post.post_hint === 'self' || post.is_self) && (
-                    <CardContent onClick={onClick}
+                    <CardContent className="responsive-div" onClick={onClick}
                     >
-                        <div dangerouslySetInnerHTML={{ __html: decodedText }}></div>
+                        <div className="responsive-div" dangerouslySetInnerHTML={{ __html: decodedText }}></div>
                     </CardContent>
                 )}
                 {post && (post.post_hint === 'hosted:video') && (
@@ -184,7 +187,7 @@ function ContentCard(props) {
                         onClick={onClick}
                     />
                 )}
-                <CardContent>
+                <CardContent className="responsive-div">
                     <Typography variant="body2" color="text.secondary">
                         {post && (post.content_categories) ?
                             (post.content_categories.map((category, index) => (
@@ -215,11 +218,11 @@ function ContentCard(props) {
                     </ExpandMore>
                 </CardActions>
                 {post && (<Collapse in={expanded} timeout="auto" unmountOnExit={true}>
-                    <CardContent>
+                    <CardContent className="responsive-div">
                         {!comments ? (
-                            <Comments comments={post.comments} />
+                            <Comments key={post.id} comments={post.comments} />
                         ) : (
-                            <Comments comments={comments} />
+                            <Comments key={comments.id} comments={comments} />
                         )}
                     </CardContent>
                 </Collapse>)}

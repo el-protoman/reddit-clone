@@ -9,6 +9,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import PostLoading from '../features/post/PostLoading';
+import './Components.css'
 
 export default function Comments({ comments }) {
     const [visibleComments, setVisibleComments] = useState(10);

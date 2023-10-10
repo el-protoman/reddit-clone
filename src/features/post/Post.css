@@ -2,10 +2,6 @@
     display: flex;
 }
 
-.post-container {
-    width: 100%;
-}
-
 .post-details {
     margin-top: var(--spacing-2);
     border-top: 1px solid var(--color-border);

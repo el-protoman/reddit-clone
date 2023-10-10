@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, fetchHomePosts, selectFilteredPosts, setSearchTerm } from './homeSlice';
 import PostLoading from '../post/PostLoading';
 import QuiltedImageList from './QuiltedImageList';
+import Grid from '@mui/material/Grid';
+import Skeleton from '@mui/material/Skeleton';
+
 
 const Home = (props) => {
     const { handleSelectedPost } = props;
@@ -11,22 +14,29 @@ const Home = (props) => {
     const filteredPosts = useSelector(selectFilteredPosts);
     const dispatch = useDispatch();
     // separating comments
-    const extractedComments = filteredPosts.map(post => post.comments);
-
+    const extractedComments = Array.isArray(filteredPosts) ? filteredPosts.map(post => post.comments) : [];
     useEffect(() => {
         dispatch(fetchHomePosts());
     }, [dispatch]);
 
     if (loading) {
         // Generate an array of PostLoading components with unique keys
+        // TODO: Return skeleton grid
         const postLoadingComponents = Array(Math.floor(Math.random() * (10 - 3 + 1)) + 3)
             .fill(null)
-            .map((_, index) => <PostLoading key={index} />);
+            .map((_, index) => <>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                    <PostLoading key={index} />
+                </Grid>
+            </>);
 
         return (
-            <div>
-                {postLoadingComponents}
-            </div>
+            <>
+                <Grid container spacing={2}>
+                    {postLoadingComponents}
+
+                </Grid>
+            </>
         );
     };
 

@@ -7,11 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import RedditIcon from '@mui/icons-material/Reddit';
-import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import { RedditTabs } from './Tabs';
+import Box from '@mui/material/Box';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -104,3 +104,4 @@ export const TopNavigation = (props) => {
         </AppBar>
     );
 }
+

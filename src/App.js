@@ -4,10 +4,10 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import { TopNavigation } from './components/TopNavigation';
 import Feed from './components/Feed';
 import SubFeed from './components/SubFeed';
 import Subcontent from './components/Subcontent';
+import ResponsiveAppBar from './components/ResNav';
 
 // TODO: add switch between quilted vs tile view
 
@@ -28,7 +28,7 @@ export default function App() {
   const [currentSub, setCurrentSub] = React.useState(null);
   const [isSubFeed, setIsSubFeed] = React.useState(false);
   // const [currentPost, setCurrentPost] = React.useState(null);
-  const [isSelectedPost, setSelectedPost] = React.useState(null);
+  const [isMainPost, setMainPost] = React.useState(null);
 
   const counterValue = useSelector((state) => state.counter.value);
   const currentPost = useSelector((state) => state.post.post);
@@ -37,37 +37,37 @@ export default function App() {
     document.title = `Post Opened: ${counterValue}`;
   }, [counterValue]);
 
-  const handleSelectedPost = (post) => {
+  const handleMainPost = (post) => {
     console.log('set selected post to: ', post)
-    setSelectedPost(post);
+    setMainPost(post);
     // setCurrentPost(post);
   }
 
   const closeSelectedPost = () => {
-    setSelectedPost(null);
+    setMainPost(null);
     // setCurrentPost(null);
   }
 
   const handleToggleSubFeed = (sub) => {
     setIsSubFeed(true);
-    setSelectedPost(null);
+    setMainPost(null);
     setCurrentSub(sub)
   };
 
   const handleToggleHomeFeed = () => {
     setIsSubFeed(false);
-    setSelectedPost(null);
+    setMainPost(null);
     setCurrentSub(null);
   }
 
   return (
-    <Container>
-      <TopNavigation
+    <>
+      <ResponsiveAppBar
         toggleSubFeed={handleToggleSubFeed}
         toggleHomeFeed={handleToggleHomeFeed}
       />
       <Box sx={{ my: 4 }}>
-        {isSelectedPost !== null ? (
+        {isMainPost !== null ? (
           <>
             <Typography variant="h4" component="h1" gutterBottom>
               Reddit Content Post
@@ -81,20 +81,21 @@ export default function App() {
                 <Typography variant="h4" component="h1" gutterBottom>
                   Subfeed - {currentSub} - Post Opened: {counterValue}
                 </Typography>
-                <SubFeed handleSelectedPost={handleSelectedPost} />
+                <SubFeed handleSelectedPost={handleMainPost} />
               </>
             ) : (
               <>
                 <Typography variant="h4" component="h1" gutterBottom>
                   Home feed - Software Engineering - Post Opened: {counterValue}
                 </Typography>
-                <Feed handleSelectedPost={handleSelectedPost} />
+                <Feed handleSelectedPost={handleMainPost} />
               </>
             )}
           </>
         )}
-        <Copyright />
       </Box>
-    </Container>
+      <Copyright />
+
+    </>
   );
 }

@@ -15,6 +15,19 @@ jest.mock('react-redux', () => ({
 }));
 
 describe('HomeFeed Component', () => {
+    beforeEach(() => {
+        // Mock the initial state for each slice
+        useSelector.mockReturnValueOnce(0); // counter slice
+        useSelector.mockReturnValueOnce({
+            loading: false,
+            error: null,
+        }); // home slice
+        useSelector.mockReturnValueOnce({
+            loading: false,
+            error: null,
+            posts: [],
+        }); // post slice
+    });
     it('displays loading state when data is loading', () => {
         useSelector.mockReturnValue({
             loading: true,
