@@ -8,6 +8,7 @@ import Feed from './components/Feed';
 import SubFeed from './components/SubFeed';
 import Subcontent from './components/Subcontent';
 import ResponsiveAppBar from './components/ResNav';
+import Sandbox from './features/sandbox.js/Sandbox';
 
 // TODO: add switch between quilted vs tile view
 
@@ -62,6 +63,7 @@ export default function App() {
 
   return (
     <>
+      <Sandbox />
       <ResponsiveAppBar
         toggleSubFeed={handleToggleSubFeed}
         toggleHomeFeed={handleToggleHomeFeed}

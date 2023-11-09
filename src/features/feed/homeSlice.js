@@ -97,13 +97,16 @@ export const fetchPosts = (subreddit) => async (dispatch) => {
 // Redux Thunk that gets posts from array of specified subreddits
 export const fetchHomePosts = () => async (dispatch) => {
     try {
+        // testing failure
+        // dispatch(fetchPostsFailure())
+
         dispatch(getSubredditsPending());
         const subreddits = await getSubreddits();
-        console.log('subreddits:', subreddits)
+        // console.log('subreddits:', subreddits)
         dispatch(getSubredditsSuccess(subreddits));
         dispatch(fetchPostsPending());
         const posts = await getAllPosts(subreddits);
-        console.log('fetch home posts', posts)
+        // console.log('fetch home posts', posts)
         const postsWithMetadata = posts.map((post) => ({
             ...post,
             showingComments: false,

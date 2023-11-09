@@ -9,7 +9,7 @@ export const getSubredditPosts = async (subreddit) => {
 };
 // get subreddits
 export const getSubreddits = async () => {
-    const response = await fetch(`${API_ROOT}/subreddits/search.json?q=software+engineering`);
+    const response = await fetch(`${API_ROOT}/subreddits/search.json?q=mechanical+engineering`);
     const json = await response.json();
 
     return json.data.children.map((subreddit) => subreddit.data);
