@@ -1,7 +1,7 @@
 # Project requirements and goals
 # Wireframes:
 Figma
-
+https://www.figma.com/file/LDYWJVWxAPPGklV5gL9KcU/Reddit-minimalist-Clone?type=design&node-id=1-2&mode=design
 # Technologies used: React, Redux, HTML/CSS/JS, Jest, Git and Github
 
 # Features/Components:
