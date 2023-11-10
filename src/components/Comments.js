@@ -13,7 +13,7 @@ import './Components.css'
 
 export default function Comments({ comments }) {
     const [visibleComments, setVisibleComments] = useState(10);
-    const postCommentsStatus = useSelector((state) => state.post.post.loadingComments);
+    const postCommentsStatus = useSelector((state) => state.post.post?.loadingComments);
 
 
     const handleShowMore = () => {

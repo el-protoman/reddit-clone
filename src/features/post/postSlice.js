@@ -55,6 +55,8 @@ const postSlice = createSlice({
             state.loading = false;
             state.post.ups += 1;
             state.error = false;
+            // Update the post in the home state
+            updatePostInHome(state.post);
         },
         upVotePostError: (state, action) => {
             state.loading = false;
@@ -98,17 +100,11 @@ export const getComments = (postId) => async (dispatch, getState) => {
 };
 
 // TODO: update this
-export const upVotePost = (postId) => {
+export const upVotePost = () => {
     return async (dispatch) => {
         dispatch(upVotePostPending());
-
         try {
-            const response = await fetch(`https://www.reddit.com/api/upvote/${postId}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
-
-            dispatch(upVotePostSuccess(data));
+            dispatch(upVotePostSuccess());
         } catch (error) {
             dispatch(upVotePostError(error.message));
         }

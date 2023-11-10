@@ -24,6 +24,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import he from 'he';
 import Comments from '../../components/Comments';
 import './Card.css';
+import { Badge } from '@mui/base';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -40,8 +41,15 @@ const ExpandMore = styled((props) => {
 
 function ContentCard(props) {
     const [expanded, setExpanded] = React.useState(false);
+    const [isFavorite, setIsFavorite] = React.useState(false);
+    const [upVotes, setUpVotes] = React.useState(0);
     const { post, style, onClick, handleSelectedPost, closeSelectedPost, comments } = props;
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        setIsFavorite(false)
+        setUpVotes(post.ups)
+    }, [])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -202,9 +210,22 @@ function ContentCard(props) {
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
-                    </IconButton>
+                    {/* Add upvote capability */}
+                    <Badge color="primary" badgeContent={upVotes} max={9999}>
+                        <IconButton
+                            aria-label="add to favorites"
+                            onClick={() => {
+                                setIsFavorite(prevState => !prevState);
+                                !isFavorite && setUpVotes(upVotes + 1)
+                            }}
+                        >
+                            {isFavorite ? (
+                                <FavoriteIcon color="primary" />
+                            ) : (
+                                <FavoriteIcon color="action" />
+                            )}
+                        </IconButton>
+                    </Badge>
                     <IconButton aria-label="share">
                         <ShareIcon />
                     </IconButton>

@@ -18,8 +18,8 @@ const Home = (props) => {
         dispatch(fetchHomePosts());
     }, [dispatch]);
 
-    console.log('the error state', error)
-    console.log('the loading state', loading)
+    // console.log('the error state', error)
+    // console.log('the loading state', loading)
 
     if (loading) {
         // Generate an array of PostLoading components with unique keys

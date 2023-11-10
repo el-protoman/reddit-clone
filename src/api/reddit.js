@@ -1,4 +1,4 @@
-const API_ROOT = "https://www.reddit.com"
+export const API_ROOT = "https://www.reddit.com"
 
 // get subredditposts
 export const getSubredditPosts = async (subreddit) => {
