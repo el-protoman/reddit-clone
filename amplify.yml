@@ -1,0 +1,6 @@
+frontend:
+  phases:
+    # ... other phases ...
+    build:
+      commands:
+        - npm ci --force
