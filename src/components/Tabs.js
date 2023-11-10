@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { setSelectedSubreddit } from '../features/feed/homeSlice';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 
 const menu1 = ['/r/javascript/', '/r/HTML/', '/r/csshelp/', '/r/reactjs/', '/r/webdev']
 const menu2 = ['/r/programming', '/r/compsci/', '/r/coding/', '/r/codecademy/', '/r/data/']
