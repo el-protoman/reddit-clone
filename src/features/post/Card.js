@@ -24,7 +24,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import he from 'he';
 import Comments from '../../components/Comments';
 import './Card.css';
-import { Badge } from '@mui/base';
+import Badge from '@mui/material/Badge';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
